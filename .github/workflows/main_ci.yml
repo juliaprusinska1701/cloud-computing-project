@@ -2,6 +2,9 @@ name: Application CI
 on:
   push:
     branches: [main]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/converter-app
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -13,5 +16,7 @@ jobs:
         with: { python-version: "3.11" }
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Run Flake8
+        run: flake8 src/ tests/
       - name: Execute Pytest
-        run: python -m pytest tests/ -v
+        run: python -m pytest tests/ -q
